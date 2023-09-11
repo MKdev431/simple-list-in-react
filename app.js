@@ -1,6 +1,6 @@
-const Person = props => {
-  return <li>{props}</li>;
-};
+// const Person = props => {
+//   return <li>{props}</li>;
+// };
 
 class List extends React.Component {
   state = {
@@ -23,8 +23,17 @@ class List extends React.Component {
     });
   };
 
+  handleDeletePerson = e => {
+    e.target.parentNode.remove();
+  };
+
   render() {
-    const newPerson = this.state.personsList.map(person => <li>{person}</li>);
+    const newPerson = this.state.personsList.map(person => (
+      <li>
+        {person}
+        <button onClick={e => this.handleDeletePerson(e)}>delete</button>
+      </li>
+    ));
     return (
       <>
         <h1>Just a list</h1>
