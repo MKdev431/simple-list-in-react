@@ -1,54 +1,44 @@
-// const Person = props => {
-//   return <li>{props}</li>;
-// };
+const Person = props => {
+  return (
+    <li>
+      <span>{props.name}</span>
+      <button
+        onClick={props.delete}
+        key={props.id}
+      >
+        Delete
+      </button>
+    </li>
+  );
+};
 
 class List extends React.Component {
   state = {
-    value: "",
-    personsList: [],
+    people: [
+      { id: 1, name: "Jan K." },
+      { id: 2, name: "Piotr C." },
+      { id: 3, name: "Marysia W." },
+      { id: 4, name: "John S." },
+    ],
   };
 
-  handleInputPerson = e => {
+  handleDelete(id) {
+    const people = [...this.state.people];
+    const index = people.findIndex(person => person.id === id);
+    people.splice(index, 1);
     this.setState({
-      value: e.target.value,
+      people,
     });
-  };
-
-  handleAddPerson = () => {
-    const personsList = [...this.state.personsList];
-    personsList.push(this.state.value);
-    this.setState({
-      personsList,
-      value: "",
-    });
-  };
-
-  handleDeletePerson = e => {
-    e.target.parentNode.remove();
-  };
-
+  }
   render() {
-    const newPerson = this.state.personsList.map(person => (
-      <li>
-        {person}
-        <button onClick={e => this.handleDeletePerson(e)}>delete</button>
-      </li>
+    const people = this.state.people.map(person => (
+      <Person
+        key={person.id}
+        name={person.name}
+        delete={this.handleDelete.bind(this, person.id)}
+      />
     ));
-    return (
-      <>
-        <h1>Just a list</h1>
-        <label>
-          Add somebody
-          <input
-            type="text"
-            value={this.state.value}
-            onChange={e => this.handleInputPerson(e)}
-          />
-          <button onClick={this.handleAddPerson}>Add to List</button>
-        </label>
-        <ul>{newPerson}</ul>
-      </>
-    );
+    return <ul>{people}</ul>;
   }
 }
 
